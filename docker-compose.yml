@@ -1,0 +1,68 @@
+version: "3.8"
+
+services: 
+  mysql_server:
+    image: mysql:8.0
+    restart: always
+    env_file: ./.env
+    environment: 
+      - MYSQL_DATABASE=$DB_NAME
+      - MYSQL_USER=$DB_NAME
+      - MYSQL_PASSWORD=$DB_PASSWORD
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+    volumes:
+      - mysql_server:/var/lib/mysql
+
+  mongodb_server:
+    image: mongo:6.0
+    restart: always
+    env_file: ./.env
+    ports:
+      - 27017:27017
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_NAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASS
+    volumes:
+      - mongodb_server:/data/db
+
+  auth-service:
+    build:
+      context: ./auth-app/
+      dockerfile: Dockerfile
+    restart: always
+    ports: 
+      - 5000:5000
+
+  flask-app:
+    build:
+      context: ./results-app/
+      dockerfile: Dockerfile
+    restart: always
+    ports: 
+      - 5001:5001
+    depends_on:
+      - auth-service
+      - mongodb_server
+
+  node-app:
+    build: 
+      context: ./node-app/
+      dockerfile: Dockerfile
+    restart: always
+    ports: 
+      - 3000:3000
+    depends_on: 
+      - auth-service
+      - mysql_server
+
+  py-app:
+    build:
+      context: ./anal-app/
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - node-app
+  
+volumes:
+  mysql_server:
+  mongodb_server:
