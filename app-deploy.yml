@@ -52,8 +52,6 @@ spec:
           - name: MONGO_DB_NAME
             value: "docker"
 
-
-
         - name: results-app
           image: yetiatdocker/results-app:1.1
           env:
