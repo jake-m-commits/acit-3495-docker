@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      hostname: mongodbserver
+      containers:
+        - name: mongodbserver
+          image: mongo:6.0
+          env:
+          - name: MONGO_NAME 
+            value: "root"
+          - name: MONGO_PASS 
+            value: "Password"
+          ports:
+            - containerPort: 27017

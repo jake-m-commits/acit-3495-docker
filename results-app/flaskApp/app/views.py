@@ -10,7 +10,7 @@ UNAME = os.getenv("UNAME")
 PASSWD = os.getenv("PASSWD")
 
 
-client = MongoClient('mongodb://mongodb_server', username=UNAME, password=PASSWD)
+client = MongoClient('mongodb://mongodbserver', username=UNAME, password=PASSWD)
 db = client['docker']
 
 

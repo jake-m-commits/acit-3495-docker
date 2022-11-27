@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      hostname: mysqlserver
+      containers:
+        - name: mysqlserver
+          image: mysql:8.0
+          env:
+          - name: MYSQL_DATABASE
+            value: "docker"
+          - name: MYSQL_USER 
+            value: "docker"
+          - name: MYSQL_PASSWORD 
+            value: "Password"
+          - name: MYSQL_ROOT_PASSWORD 
+            value: "Password"
+          ports:
+            - containerPort: 3306
