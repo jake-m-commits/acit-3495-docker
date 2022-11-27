@@ -14,12 +14,12 @@ spec:
     spec:
       containers:
         - name: auth-app
-          image: yetiatdocker/auth-app:1.1
+          image: yetiatdocker/auth-app:latest
           ports:
             - containerPort: 5000
 
         - name: node-app
-          image: yetiatdocker/node-app:1.1
+          image: yetiatdocker/node-app:latest
           env:
           - name: DB_HOST
             value: "mysqlserver"
@@ -33,7 +33,7 @@ spec:
             - containerPort: 3000
 
         - name: anal-app
-          image: yetiatdocker/anal-app:1.2
+          image: yetiatdocker/anal-app:latest
           env:
           - name: DB_HOST
             value: "mysqlserver"
@@ -55,7 +55,7 @@ spec:
 
 
         - name: results-app
-          image: yetiatdocker/results-app:1.1
+          image: yetiatdocker/results-app:latest
           env:
           - name: UNAME 
             value: "root"
