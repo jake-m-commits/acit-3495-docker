@@ -1,25 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ACIT3495-App
+  name: acit3495
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ACIT3495-App
+      app: acit3495
   template:
     metadata:
       labels:
-        app: ACIT3495-App
+        app: acit3495
     spec:
       containers:
-        - name: mongodb_server
+        # - name: acit3495
+        - name: mongodbserver
           image: mongo:6.0
-          envFrom:
-            - secretRef:
-              name: app-secret
-        - name: mysql_server
+          volumeMounts:
+          - name: volume
+            mountPath: /etc/volume
+        # - name: acit3495
+        - name: mysqlserver
           image: mysql:8.0
-          envFrom:
-            - secretRef:
-              name: app-secret
+          volumeMounts:
+          - name: volume
+            mountPath: /etc/volume
+          # envFrom:
+          #   - secretRef:
+          #     name: app-secret
+          # volumeMounts:    
+          #   - mountPath: /var/lib/mysql    
+          #     name: mysql-volume
+      volumes:
+        - name: volume
+          secret:
+            secretName: app-secret
+            optional: false
