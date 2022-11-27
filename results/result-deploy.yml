@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: results
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: results
+  template:
+    metadata:
+      labels:
+        app: results
+    spec:
+      containers:
+        - name: results-app
+          image: yetiatdocker/results-app:latest
+          env:
+          - name: UNAME 
+            value: "root"
+          - name: PASSWD 
+            value: "Password"
+          ports:
+            - containerPort: 5001
+
