@@ -15,24 +15,40 @@ spec:
       containers:
         - name: anal-app
           image: yetiatdocker/anal-app:1.1
+          volumeMounts:  
+            - name: secret
+              mountPath: /etc/secret 
         - name: auth-app
           image: yetiatdocker/auth-app:1.1
+          ports:
+            - containerPort: 5000
+          volumeMounts:  
+            - name: secret
+              mountPath: /etc/secret 
         - name: node-app
           image: yetiatdocker/node-app:1.1
+          volumeMounts:  
+            - name: secret
+              mountPath: /etc/secret 
+          ports:
+            - containerPort: 3000
         - name: results-app
           image: yetiatdocker/results-app:1.1
-        # - name: acit3495
+          volumeMounts:  
+            - name: secret
+              mountPath: /etc/secret 
+          ports:
+            - containerPort: 5001
         - name: mongodbserver
           image: mongo:6.0
-          volumeMounts:
-          - name: volume
-            mountPath: /etc/volume
-        # - name: acit3495
+
+
         - name: mysqlserver
           image: mysql:8.0
-          volumeMounts:
-          - name: volume
-            mountPath: /etc/volume
+          # volumeMounts:    
+          #   - name: mssqldb
+          #     mountPath: /var/lib/mysql    
+
           # envFrom:
           #   - secretRef:
           #     name: app-secret
@@ -40,7 +56,12 @@ spec:
           #   - mountPath: /var/lib/mysql    
           #     name: mysql-volume
       volumes:
-        - name: volume
+        - name: secret
           secret:
             secretName: app-secret
             optional: false
+
+
+      # - name: mssqldb
+      #   persistentVolumeClaim:
+      #     claimName: mysql-data
