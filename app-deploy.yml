@@ -14,13 +14,13 @@ spec:
     spec:
       containers:
         - name: anal-app
-          image: yetiatdocker/anal-app:1.0
+          image: yetiatdocker/anal-app:1.1
         - name: auth-app
-          image: yetiatdocker/auth-app:1.0
+          image: yetiatdocker/auth-app:1.1
         - name: node-app
-          image: yetiatdocker/node-app:1.0
+          image: yetiatdocker/node-app:1.1
         - name: results-app
-          image: yetiatdocker/results-app:1.0
+          image: yetiatdocker/results-app:1.1
         # - name: acit3495
         - name: mongodbserver
           image: mongo:6.0
