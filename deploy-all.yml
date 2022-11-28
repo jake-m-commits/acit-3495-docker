@@ -276,6 +276,7 @@ kind: Service
 metadata:
  name: node-service
 spec:
+ type: ClusterIP
  selector:
    app: node
  ports:
@@ -329,6 +330,7 @@ kind: Service
 metadata:
  name: results-service
 spec:
+ type: ClusterIP
  selector:
    app: results
  ports:
