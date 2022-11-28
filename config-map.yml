@@ -5,7 +5,7 @@ metadata:
 data:
   MYSQL_ROOT_PASSWORD: Password
   MYSQL_DATABASE: docker
-  MYSQL_USER: docker
+  MYSQL_USER: root
   MYSQL_PASSWORD: Password
   MONGO_INITDB_ROOT_USERNAME: root
   MONGO_INITDB_ROOT_PASSWORD: Password
