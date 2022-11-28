@@ -6,11 +6,11 @@ import time
 load_dotenv()
 
 
-mysql_host = os.getenv("DB_HOST")
+mysql_host = os.getenv("MYSQL_SERVICE_SERVICE_HOST")
 mysql_database = os.getenv("DB_NAME")
 mysql_user = os.getenv("DB_USER")
 mysql_password = os.getenv("DB_PASSWORD")
-mongodb_host = os.getenv("MONGO_DB_HOST")
+mongodb_host = os.getenv("MONGO_SERVICE_SERVICE_HOST")
 mongodb_dbname = os.getenv("MONGO_DB_NAME")
 
 myclient = pymongo.MongoClient(mongodb_host, username=os.getenv("MONGO_NAME"), password=os.getenv("MONGO_PASS"))
