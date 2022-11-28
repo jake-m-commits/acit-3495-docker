@@ -17,15 +17,9 @@ spec:
       containers:
         - name: node-app
           image: yetiatdocker/node-app:latest
-          env:
-          # - name: DB_HOST
-          #   value: "127.0.0.1"
-          - name: DB_USER 
-            value: "root"
-          - name: DB_PASSWORD 
-            value: Password
-          - name: DB_NAME 
-            value: "docker"
+          envFrom:
+            - configMapRef:
+                name: config
           ports:
             - containerPort: 3000
 

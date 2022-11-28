@@ -30,6 +30,9 @@ spec:
             value: "Password"
           - name: MONGO_DB_NAME
             value: "docker"
+          envFrom:
+            - configMapRef:
+                name: config
 
 ---
 

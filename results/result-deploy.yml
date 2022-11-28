@@ -17,11 +17,9 @@ spec:
       containers:
         - name: results-app
           image: yetiatdocker/results-app:latest
-          env:
-          - name: UNAME 
-            value: "root"
-          - name: PASSWD 
-            value: "Password"
+          envFrom:
+            - configMapRef:
+                name: config
           ports:
             - containerPort: 5001
 
