@@ -69,6 +69,9 @@ spec:
           image: yetiatdocker/auth-app:latest
           ports:
             - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: config
 
 ---
 
@@ -130,6 +133,9 @@ spec:
 
           ports:
             - containerPort: 27017
+          envFrom:
+            - configMapRef:
+                name: config
 
 ---
 
@@ -193,6 +199,9 @@ spec:
           volumeMounts:
           - name: mysql-persistent-storage
             mountPath: /var/lib/mysql
+          envFrom:
+            - configMapRef:
+                name: config
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
@@ -284,6 +293,9 @@ spec:
             value: "docker"
           ports:
             - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: config
 
 ---
 
@@ -339,6 +351,9 @@ spec:
             value: "Password"
           ports:
             - containerPort: 5001
+          envFrom:
+            - configMapRef:
+                name: config
 
 ---
 
