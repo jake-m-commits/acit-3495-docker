@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: anal-app
-          image: yetiatdocker/anal-app:latest
+          image: jovan9876/anal-app:latest
           envFrom:
             - configMapRef:
                 name: config
@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
         - name: auth-app
-          image: yetiatdocker/auth-app:latest
+          image: jovan9876/auth-app:latest
           ports:
             - containerPort: 5000
           envFrom:
@@ -248,7 +248,7 @@ spec:
     spec:
       containers:
         - name: node-app
-          image: yetiatdocker/node-app:latest
+          image: jovan9876/node-app:latest
           ports:
             - containerPort: 3000
           envFrom:
@@ -302,7 +302,7 @@ spec:
     spec:
       containers:
         - name: results-app
-          image: yetiatdocker/results-app:latest
+          image: jovan9876/results-app:latest
           ports:
             - containerPort: 5001
           envFrom:
