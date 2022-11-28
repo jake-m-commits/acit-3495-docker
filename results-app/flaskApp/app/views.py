@@ -8,9 +8,10 @@ load_dotenv()
 
 UNAME = os.getenv("UNAME")
 PASSWD = os.getenv("PASSWD")
+mongohost = os.getenv("MONGO_SERVICE_SERVICE_HOST")
 
 
-client = MongoClient('mongodb://mongodbserver', username=UNAME, password=PASSWD)
+client = MongoClient(f'mongodb://{mongohost}', username=UNAME, password=PASSWD)
 db = client['docker']
 
 
