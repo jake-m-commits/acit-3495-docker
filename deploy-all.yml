@@ -5,7 +5,7 @@ kind: Deployment
 metadata:
   name: anal
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: anal
@@ -28,7 +28,7 @@ kind: Deployment
 metadata:
   name: auth
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: auth
@@ -81,7 +81,7 @@ kind: Deployment
 metadata:
   name: mongo
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: mongo
@@ -96,16 +96,16 @@ spec:
           image: mongo:6.0
           ports:
             - containerPort: 27017
-          volumeMounts:
-          - name: mongo-persistent-storage
-            mountPath: /data/db
+          # volumeMounts:
+          # - name: mongo-persistent-storage
+          #   mountPath: /data/db
           envFrom:
             - configMapRef:
                 name: config
-      volumes:
-      - name: mongo-persistent-storage
-        persistentVolumeClaim:
-          claimName: mongo-pv-claim
+      # volumes:
+      # - name: mongo-persistent-storage
+      #   persistentVolumeClaim:
+      #     claimName: mongo-pv-claim
 
 ---
 
@@ -159,7 +159,7 @@ kind: Deployment
 metadata:
   name: mysql
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: mysql
@@ -174,16 +174,16 @@ spec:
           image: mysql:8.0
           ports:
             - containerPort: 3306
-          volumeMounts:
-          - name: mysql-persistent-storage
-            mountPath: /var/lib/mysql
+          # volumeMounts:
+          # - name: mysql-persistent-storage
+          #   mountPath: /var/lib/mysql
           envFrom:
             - configMapRef:
                 name: config
-      volumes:
-      - name: mysql-persistent-storage
-        persistentVolumeClaim:
-          claimName: mysql-pv-claim
+      # volumes:
+      # - name: mysql-persistent-storage
+      #   persistentVolumeClaim:
+      #     claimName: mysql-pv-claim
 
 ---
 
@@ -237,7 +237,7 @@ kind: Deployment
 metadata:
   name: node
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: node
@@ -290,7 +290,7 @@ kind: Deployment
 metadata:
   name: results
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: results
