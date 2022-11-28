@@ -17,19 +17,6 @@ spec:
       containers:
         - name: anal-app
           image: yetiatdocker/anal-app:latest
-          env:
-          - name: DB_NAME 
-            value: "docker"
-          - name: DB_USER 
-            value: "docker"
-          - name: DB_PASSWORD 
-            value: Password
-          - name: MONGO_NAME 
-            value: "root"
-          - name: MONGO_PASS 
-            value: "Password"
-          - name: MONGO_DB_NAME
-            value: "docker"
           envFrom:
             - configMapRef:
                 name: config
@@ -121,35 +108,11 @@ spec:
       containers:
         - name: mongodbserver
           image: mongo:6.0
-          env:
-          - name: MONGO_INITDB_ROOT_USERNAME
-            value: "root"
-          - name: MONGO_INITDB_ROOT_PASSWORD
-            value: "Password"
-          - name: MONGO_DB_NAME
-            value: "docker"
-          - name: MONGO_INIT_DB_NAME
-            value: "docker"
-
           ports:
             - containerPort: 27017
           envFrom:
             - configMapRef:
                 name: config
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongo-load-balancer
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 27017
-      targetPort: 27017
-  selector:
-    app: mongo
 
 ---
 
@@ -164,6 +127,37 @@ spec:
    - protocol: TCP
      port: 27017
      targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/mongo"
+    
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
 
 ---
 
@@ -185,15 +179,6 @@ spec:
       containers:
         - name: mysqlserver
           image: mysql:8.0
-          env:
-          - name: MYSQL_DATABASE
-            value: "docker"
-          - name: MYSQL_USER 
-            value: "docker"
-          - name: MYSQL_PASSWORD 
-            value: "Password"
-          - name: MYSQL_ROOT_PASSWORD 
-            value: "Password"
           ports:
             - containerPort: 3306
           volumeMounts:
@@ -206,19 +191,6 @@ spec:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql-load-balancer
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 3306
-      targetPort: 3306
-  selector:
-    app: mysql
 
 ---
 
@@ -282,15 +254,6 @@ spec:
       containers:
         - name: node-app
           image: yetiatdocker/node-app:latest
-          env:
-          # - name: DB_HOST
-          #   value: "127.0.0.1"
-          - name: DB_USER 
-            value: "root"
-          - name: DB_PASSWORD 
-            value: Password
-          - name: DB_NAME 
-            value: "docker"
           ports:
             - containerPort: 3000
           envFrom:
@@ -344,11 +307,6 @@ spec:
       containers:
         - name: results-app
           image: yetiatdocker/results-app:latest
-          env:
-          - name: UNAME 
-            value: "root"
-          - name: PASSWD 
-            value: "Password"
           ports:
             - containerPort: 5001
           envFrom:
