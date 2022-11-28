@@ -81,7 +81,7 @@ kind: Deployment
 metadata:
   name: mongo
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: mongo
@@ -159,7 +159,7 @@ kind: Deployment
 metadata:
   name: mysql
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: mysql
