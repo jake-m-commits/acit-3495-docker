@@ -23,20 +23,6 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: auth-load-balancer
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 5000
-      targetPort: 5000
-  selector:
-    app: auth
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -120,6 +106,7 @@ spec:
       - name: mongo-persistent-storage
         persistentVolumeClaim:
           claimName: mongo-pv-claim
+
 ---
 
 apiVersion: v1
@@ -227,8 +214,10 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/data"
+    path: "/mnt/mysql"
+
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
