@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, redirect
+from flask import render_template, redirect, request
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -26,9 +26,11 @@ def db_stuff():
         return {'highest_grade': 'none', 'lowest_grade': 'none', 'avg_grade': 'none'}
 
 
-@ app.route("/")
+@ app.route("/", methods=[ "GET" ])
 def index():
-    return redirect("http://localhost:5000/")
+    if request.method == 'GET':
+        host = request.host.split(':')[0]
+        return redirect(f"http://{host}:5000/")
 
 
 @ app.route("/home")

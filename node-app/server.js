@@ -36,7 +36,8 @@ app.use(
 app.use(flash());
 
 app.get("/", function (req, res) {
-    res.redirect("http://localhost:5000");
+    let host = req.get("host").split(":")[0];
+    res.redirect(`http://${host}:5000`);
 });
 
 app.get("/home", function (req, res, next) {
