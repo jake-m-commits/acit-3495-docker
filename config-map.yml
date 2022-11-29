@@ -18,3 +18,5 @@ data:
   MONGO_DB_NAME: docker
   UNAME: root
   PASSWD: Password
+  MONGO_HOST: mongo-service
+  MYSQL_HOST: mysql-service
