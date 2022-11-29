@@ -1,25 +1,23 @@
 ---
 
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: anal
+  name: external-lb
 spec:
-  replicas: 5
+  type: LoadBalancer
+  ports:
+  - name: auth
+    port: 5000
+    targetPort: "5000-port"
+  - name: node
+    port: 3000
+    targetPort: "3000-port"
+  - name: results
+    port: 5001
+    targetPort: "5001-port"
   selector:
-    matchLabels:
-      app: anal
-  template:
-    metadata:
-      labels:
-        app: anal
-    spec:
-      containers:
-        - name: anal-app
-          image: jovan9876/anal-app:latest
-          envFrom:
-            - configMapRef:
-                name: config
+    lbtype: external
 
 ---
 
@@ -28,129 +26,52 @@ kind: Deployment
 metadata:
   name: auth
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
-      app: auth
+      lbtype: external
   template:
     metadata:
       labels:
         app: auth
+        lbtype: external
     spec:
       containers:
         - name: auth-app
           image: jovan9876/auth-app:latest
-          ports:
-            - containerPort: 5000
           envFrom:
             - configMapRef:
                 name: config
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: auth-load-balancer
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 5000
-      targetPort: 5000
-  selector:
-    app: auth
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
- name: auth-service
-spec:
- selector:
-   app: auth
- ports:
-   - protocol: TCP
-     port: 5000
-     targetPort: 5000
+          ports:
+            - containerPort: 5000
+              name: "5000-port"
 
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo
+  name: node
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongo
+      lbtype: external
   template:
     metadata:
       labels:
-        app: mongo
+        lbtype: external
+        app: node
     spec:
-      hostname: mongodbserver
       containers:
-        - name: mongodbserver
-          image: mongo:6.0
-          ports:
-            - containerPort: 27017
-          # volumeMounts:
-          # - name: mongo-persistent-storage
-          #   mountPath: /data/db
+        - name: node-app
+          image: jovan9876/node-app:latest
           envFrom:
             - configMapRef:
                 name: config
-      # volumes:
-      # - name: mongo-persistent-storage
-      #   persistentVolumeClaim:
-      #     claimName: mongo-pv-claim
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
- name: mongo-service
-spec:
- selector:
-   app: mongo
- ports:
-   - protocol: TCP
-     port: 27017
-     targetPort: 27017
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mongo-pv-volume
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 2Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/mnt/mongo"
-    
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mongo-pv-claim
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
+          ports:
+            - containerPort: 3000
+              name: "3000-port"
 
 ---
 
@@ -172,18 +93,12 @@ spec:
       containers:
         - name: mysqlserver
           image: mysql:8.0
-          ports:
-            - containerPort: 3306
-          # volumeMounts:
-          # - name: mysql-persistent-storage
-          #   mountPath: /var/lib/mysql
           envFrom:
             - configMapRef:
                 name: config
-      # volumes:
-      # - name: mysql-persistent-storage
-      #   persistentVolumeClaim:
-      #     claimName: mysql-pv-claim
+          ports:
+            - containerPort: 3306
+
 
 ---
 
@@ -201,88 +116,66 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mysql-pv-volume
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 2Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/mnt/mysql"
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pv-claim
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node
+  name: anal
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
-      app: node
+      app: anal
   template:
     metadata:
       labels:
-        app: node
+        app: anal
     spec:
       containers:
-        - name: node-app
-          image: jovan9876/node-app:latest
-          ports:
-            - containerPort: 3000
+        - name: anal-app
+          image: jovan9876/anal-app:latest
           envFrom:
             - configMapRef:
                 name: config
 
 ---
 
-apiVersion: v1
-kind: Service
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: node-load-balancer
+  name: mongo
 spec:
-  type: LoadBalancer
-  ports:
-    - port: 3000
-      targetPort: 3000
+  replicas: 1
   selector:
-    app: node
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      hostname: mongodbserver
+      containers:
+        - name: mongodbserver
+          image: mongo:6.0
+          envFrom:
+            - configMapRef:
+                name: config
+          ports:
+            - containerPort: 27017
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
- name: node-service
+ name: mongo-service
 spec:
- type: ClusterIP
  selector:
-   app: node
+   app: mongo
  ports:
    - protocol: TCP
-     port: 3000
-     targetPort: 3000
+     port: 27017
+     targetPort: 27017
 
 ---
 
@@ -291,51 +184,24 @@ kind: Deployment
 metadata:
   name: results
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
-      app: results
+      lbtype: external
   template:
     metadata:
       labels:
+        lbtype: external
         app: results
     spec:
       containers:
         - name: results-app
           image: jovan9876/results-app:latest
-          ports:
-            - containerPort: 5001
           envFrom:
             - configMapRef:
                 name: config
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: result-load-balancer
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 5001
-      targetPort: 5001
-  selector:
-    app: results
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
- name: results-service
-spec:
- type: ClusterIP
- selector:
-   app: results
- ports:
-   - protocol: TCP
-     port: 5001
-     targetPort: 5001
+          ports:
+            - containerPort: 5001
+              name: "5001-port"
 
 ---
