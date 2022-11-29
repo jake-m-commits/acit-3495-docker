@@ -8,7 +8,7 @@ load_dotenv()
 
 UNAME = os.getenv("UNAME")
 PASSWD = os.getenv("PASSWD")
-mongohost = os.getenv("MONGO_HOST")
+mongohost = os.getenv("MONGO_SERVICE_SERVICE_HOST")
 
 
 client = MongoClient(f'mongodb://{mongohost}', username=UNAME, password=PASSWD)
