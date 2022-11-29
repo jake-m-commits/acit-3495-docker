@@ -11,10 +11,10 @@ def login():
     if request.method == 'POST':
         if request.form['username'] == 'node' and request.form['password'] == 'node':
             # return redirect(f'http://{node}:3000/home')
-            return redirect(f'http://node-load-balancer:3000/home')
+            return redirect(f'http://node-service:3000/home')
         elif request.form['username'] == 'flask' and request.form['password'] == 'flask':
             # return redirect(f'http://{flask}:5001/home')
-            return redirect(f'http://result-load-balancer:5001/home')
+            return redirect(f'http://result-service:5001/home')
         else:
             error = 'Invalid Credentials. Please try again.'
     return render_template('public/login.html', error=error)

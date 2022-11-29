@@ -64,17 +64,31 @@ spec:
 
 ---
 
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: node-load-balancer
+# spec:
+#   type: LoadBalancer
+#   ports:
+#     - port: 3000
+#       targetPort: 3000
+#   selector:
+#     app: node
+
+---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: node-load-balancer
+ name: node-service
 spec:
-  type: LoadBalancer
-  ports:
-    - port: 3000
-      targetPort: 3000
-  selector:
-    app: node
+ selector:
+   app: node
+ ports:
+   - protocol: TCP
+     port: 3000
+     targetPort: 3000
 
 ---
 
@@ -207,14 +221,30 @@ spec:
 
 ---
 
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: result-load-balancer
+# spec:
+#   type: LoadBalancer
+#   ports:
+#     - port: 5001
+#       targetPort: 5001
+#   selector:
+#     app: results
+
+---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: result-load-balancer
+ name: result-service
 spec:
-  type: LoadBalancer
-  ports:
-    - port: 5001
-      targetPort: 5001
-  selector:
-    app: results
+ selector:
+   app: results
+ ports:
+   - protocol: TCP
+     port: 5001
+     targetPort: 5001
+
+---
