@@ -26,7 +26,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-load-balancer
+  name: anal-load-balancer
 spec:
   type: LoadBalancer
   ports:

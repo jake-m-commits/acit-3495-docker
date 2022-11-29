@@ -29,7 +29,6 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      # app: auth
       lbtype: external
   template:
     metadata:
@@ -46,19 +45,6 @@ spec:
           ports:
             - containerPort: 5000
               name: "5000-port"
----
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: auth-load-balancer
-# spec:
-#   type: LoadBalancer
-#   ports:
-#     - port: 5000
-#       targetPort: 5000
-#   selector:
-#     app: auth
 
 ---
 
@@ -71,8 +57,6 @@ spec:
   selector:
     matchLabels:
       lbtype: external
-      # app: node
-
   template:
     metadata:
       labels:
@@ -88,36 +72,6 @@ spec:
           ports:
             - containerPort: 3000
               name: "3000-port"
-
----
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: node-load-balancer
-# spec:
-#   type: LoadBalancer
-#   ports:
-#     - port: 3000
-#       targetPort: 3000
-#   selector:
-#     app: node
-
----
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#  name: node-service
-# spec:
-#  selector:
-#    app: node
-#    type: NodePort
-#  ports:
-#    - name: http
-#      port: 3000
-#      targetPort: 3000
-#      protocol: TCP
 
 ---
 
@@ -233,9 +187,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      # app: results
       lbtype: external
-
   template:
     metadata:
       labels:
@@ -252,33 +204,4 @@ spec:
             - containerPort: 5001
               name: "5001-port"
 
----
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: result-load-balancer
-# spec:
-#   type: LoadBalancer
-#   ports:
-#     - port: 5001
-#       targetPort: 5001
-#   selector:
-#     app: results
-
----
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#  name: result-service
-# spec:
-#  selector:
-#    app: results
-#    type: NodePort
-#  ports:
-#    - name: http
-#      port: 5001
-#      targetPort: 5001
-#      protocol: TCP
 ---

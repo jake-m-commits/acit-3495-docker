@@ -9,12 +9,11 @@ import os
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] == 'node' and request.form['password'] == 'node':
-            # return redirect(f'http://{node}:3000/home')
-            return redirect(f'http://node-service:3000/home')
+        host = request.host.split(':')[0]
+        if request.form['username'] == 'node' and request.form['password'] == 'node':            
+            return redirect(f'http://{host}:3000/home')
         elif request.form['username'] == 'flask' and request.form['password'] == 'flask':
-            # return redirect(f'http://{flask}:5001/home')
-            return redirect(f'http://result-service:5001/home')
+            return redirect(f'http://{host}:5001/home')
         else:
             error = 'Invalid Credentials. Please try again.'
     return render_template('public/login.html', error=error)
