@@ -39,7 +39,7 @@ spec:
       containers:
         - name: auth-app
           image: jovan9876/auth-app:latest
-          ImagePullPolicy: Always
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: config
@@ -67,7 +67,7 @@ spec:
       containers:
         - name: node-app
           image: jovan9876/node-app:latest
-          ImagePullPolicy: Always
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: config
@@ -135,7 +135,7 @@ spec:
       containers:
         - name: anal-app
           image: jovan9876/anal-app:latest
-          ImagePullPolicy: Always
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: config
@@ -200,7 +200,7 @@ spec:
       containers:
         - name: results-app
           image: jovan9876/results-app:latest
-          ImagePullPolicy: Always
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: config
